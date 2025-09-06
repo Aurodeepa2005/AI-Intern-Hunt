@@ -8,55 +8,31 @@ app = Flask(__name__)
 # Load dataset
 df = pd.read_csv("internships.csv")
 
-def preprocess(text):
-    return str(text).lower().strip()
+# Get unique options for dropdowns
+educations = sorted(df['education'].unique())
+sectors = sorted(df['sector'].unique())
+locations = sorted(df['location'].unique())
 
 def recommend_internships(skills, education, sector, location, top_n=5):
-    # Preprocess inputs
-    skills = preprocess(skills)
-    education = preprocess(education)
-    sector = preprocess(sector)
-    location = preprocess(location)
+    # Combine internship details into one text column
+    df["combined"] = df["skills"] + " " + df["education"] + " " + df["sector"] + " " + df["location"]
 
-    # Weighted combination for dataset
-    df["combined"] = (
-        (df["skills"].apply(preprocess) + " ") * 3 +
-        (df["education"].apply(preprocess) + " ") * 2 +
-        (df["sector"].apply(preprocess) + " ") * 2 +
-        (df["location"].apply(preprocess) + " ")
-    )
-
-    # Candidate profile
-    candidate_profile = (
-        (skills + " ") * 3 +
-        (education + " ") * 2 +
-        (sector + " ") * 2 +
-        (location + " ")
-    )
+    # Candidate profile as a text string
+    candidate_profile = skills + " " + education + " " + sector + " " + location
 
     # TF-IDF Vectorization
     vectorizer = TfidfVectorizer()
     tfidf_matrix = vectorizer.fit_transform(df["combined"].tolist() + [candidate_profile])
 
-    # Cosine similarity
+    # Cosine similarity between candidate and all internships
     cosine_sim = cosine_similarity(tfidf_matrix[-1], tfidf_matrix[:-1])
     df["score"] = cosine_sim.flatten()
 
-    # -------- Location filtering + fallback --------
-    if location:
-        location_matches = df[df["location"].str.lower() == location]
-        if not location_matches.empty:
-            recommendations = location_matches.sort_values(by="score", ascending=False).head(top_n)
-        else:
-            recommendations = df.sort_values(by="score", ascending=False).head(top_n)
-    else:
-        recommendations = df.sort_values(by="score", ascending=False).head(top_n)
-    # ------------------------------------------------
-
-    # Convert score to percentage
-    recommendations["score"] = (recommendations["score"] * 100).round(0).astype(int)
-
-    return recommendations[["title", "skills", "education", "sector", "location", "score"]].to_dict(orient="records")
+    # Sort internships by similarity score
+    recommendations = df.sort_values(by="score", ascending=False).head(top_n)
+    recommendations = recommendations[["title", "skills", "education", "sector", "location", "score"]]
+    recommendations["match"] = (recommendations["score"] * 100).round(2)
+    return recommendations.to_dict(orient="records")
 
 @app.route("/", methods=["GET", "POST"])
 def index():
@@ -66,10 +42,9 @@ def index():
         education = request.form.get("education", "")
         sector = request.form.get("sector", "")
         location = request.form.get("location", "")
+        recommendations = recommend_internships(skills, education, sector, location, top_n=5)
+    return render_template("index.html", recommendations=recommendations,
+                           educations=educations, sectors=sectors, locations=locations)
 
-        recommendations = recommend_internships(skills, education, sector, location, top_n=3)
-
-    return render_template("index.html", recommendations=recommendations)
-
-if __name__ == "__main__":
+if __name__ == "_main_":
     app.run(debug=True)
