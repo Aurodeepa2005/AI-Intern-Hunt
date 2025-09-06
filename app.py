@@ -46,10 +46,5 @@ def index():
     return render_template("index.html", recommendations=recommendations,
                            educations=educations, sectors=sectors, locations=locations)
 
-<<<<<<< HEAD
-if __name__ == "_main_":
-    app.run(debug=True)
-=======
 if __name__ == "__main__":
     app.run(debug=True)
->>>>>>> 4ba561d7abff2525ca6b7163d0c7f903aa3d727e

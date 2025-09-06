@@ -7,8 +7,58 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
-<body>
-    <div class="container">
+<body id="start">
+    <nav class="navbar">
+        <a class="logo" href="#start">InternHunt</a>
+        <ul>
+            <li><a href="#start">Home</a></li>
+            <li><a href="#footer">About Us</a></li>
+            <li class="begin"><a href="#container">Begin</a></li>
+        </ul>
+    </nav>
+
+    <div class="hero">
+        <div class="center">
+            <h4>AI-Powered PM Internship Finder</h4>
+            <h1>Find the Right PM Internship for You !</h1>
+            <p>Discover tailored PM internship opportunities that match your skills, education, and location. Let our
+                intelligent platform guide your career journey and accelerate your growth in product management.</p>
+            <button class="btn"><a href="#container">Get Started !</a></button>
+        </div>
+    </div>
+
+    <div class="content">
+        <h2>Powerful Features</h2>
+        <p>Everything you need to discover and land the right PM internship.</p>
+        <div class="hcards">
+            <div class="hcard">
+                <div class="hcard-body">
+                    <h3>Smart Matching Engine</h3>
+                    <p>AI matches you with internships relevant to your skills, education, and location.</p>
+                </div>
+            </div>
+            <div class="hcard">
+                <div class="hcard-body">
+                    <h3>Lightning Fast Search</h3>
+                    <p>Find internships instantly with up-to-date listings and smart filtering.</p>
+                </div>
+            </div>
+            <div class="hcard">
+                <div class="hcard-body">
+                    <h3>Personalized Learning Paths</h3>
+                    <p>AI analyzes your skills and education to personalize internship recommendations for you.</p>
+                </div>
+            </div>
+            <div class="hcard">
+                <div class="hcard-body">
+                    <h3>Instant Opportunity Alerts</h3>
+                    <p>Get AI alerts for internships matching your skills, education, and location.</p>
+                </div>
+            </div>            
+        </div>
+    </div>
+
+    <div class="container" id="container">
         <h1>Internship Recommender</h1>
         <form method="POST">
             <label for="skills">Skills (comma separated):</label>
@@ -16,6 +66,7 @@
 
             <label for="education">Education:</label>
             <select id="education" name="education" required>
+                <option value="" disabled selected>Select Education</option>
                 {% for edu in educations %}
                 <option value="{{ edu }}">{{ edu }}</option>
                 {% endfor %}
@@ -23,6 +74,7 @@
 
             <label for="sector">Sector:</label>
             <select id="sector" name="sector" required>
+                <option value="" disabled selected>Select Sector</option>
                 {% for sec in sectors %}
                 <option value="{{ sec }}">{{ sec }}</option>
                 {% endfor %}
@@ -30,6 +82,7 @@
 
             <label for="location">Location:</label>
             <select id="location" name="location" required>
+                <option value="" disabled selected>Select Location</option>
                 {% for loc in locations %}
                 <option value="{{ loc }}">{{ loc }}</option>
                 {% endfor %}
@@ -56,6 +109,12 @@
             {% endfor %}
         </div>
         {% endif %}
+    </div>
+
+    <div class="footer" id="footer">
+        <p>Helping you find the perfect Product Management internship tailored to your skills, education, and location.</p>
+        <br>
+        <p>© 2025 InternHunt. All rights reserved.</p>
     </div>
 </body>
 
