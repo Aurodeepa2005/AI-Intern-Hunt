@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Internship Recommender</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <div class="form-box">
+        <h2>Find Your Internship</h2>
+        <form method="POST">
+            <label>Education:</label>
+            <input type="text" name="education" placeholder="UG / PG / Diploma" required><br><br>
+
+            <label>Skills (comma separated):</label>
+            <input type="text" name="skills" placeholder="Python, SQL, Excel" required><br><br>
+
+            <label>Sector of Interest:</label>
+            <input type="text" name="sector" placeholder="IT / Marketing / Healthcare" required><br><br>
+
+            <label>Preferred Location:</label>
+            <input type="text" name="location" placeholder="Delhi / Bangalore / Mumbai" required><br><br>
+
+            <button type="submit">Get Recommendations</button>
+        </form>
+    </div>
+
+    <div class="recommendations">
+        {% if recommendations %}
+        <h3>Recommended Internships:</h3>
+        {% for rec in recommendations %}
+        <div class="card">
+            <h4>{{ rec.title }}</h4>
+            <p><b>Skills:</b> {{ rec.skills }}</p>
+            <p><b>Education:</b> {{ rec.education }}</p>
+            <p><b>Sector:</b> {{ rec.sector }}</p>
+            <p><b>Location:</b> {{ rec.location }}</p>
+            <p><b>Match Score:</b> {{ "%.2f"|format(rec.score) }}</p>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+</body>
+
+</html>
