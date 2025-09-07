@@ -13,6 +13,15 @@ educations = sorted(df['education'].unique())
 sectors = sorted(df['sector'].unique())
 locations = sorted(df['location'].unique())
 
+def get_match_level(match):
+    """Return CSS class for progress bar based on match %."""
+    if match < 40:
+        return "low"
+    elif match < 70:
+        return "medium"
+    else:
+        return "high"
+
 def recommend_internships(skills, education, sector, location, top_n=5):
     # Combine internship details into one text column
     df["combined"] = df["skills"] + " " + df["education"] + " " + df["sector"] + " " + df["location"]
@@ -32,6 +41,10 @@ def recommend_internships(skills, education, sector, location, top_n=5):
     recommendations = df.sort_values(by="score", ascending=False).head(top_n)
     recommendations = recommendations[["title", "skills", "education", "sector", "location", "score"]]
     recommendations["match"] = (recommendations["score"] * 100).round(2)
+
+    # Add match_level for CSS styling
+    recommendations["match_level"] = recommendations["match"].apply(get_match_level)
+
     return recommendations.to_dict(orient="records")
 
 @app.route("/", methods=["GET", "POST"])

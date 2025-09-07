@@ -23,7 +23,8 @@
             <h1>Find the Right PM Internship for You !</h1>
             <p>Discover tailored PM internship opportunities that match your skills, education, and location. Let our
                 intelligent platform guide your career journey and accelerate your growth in product management.</p>
-            <button class="btn"><a href="#container">Get Started !</a></button>
+            <a href="#container" class="btn">Get Started!</a>
+
         </div>
     </div>
 
@@ -54,7 +55,7 @@
                     <h3>Instant Opportunity Alerts</h3>
                     <p>Get AI alerts for internships matching your skills, education, and location.</p>
                 </div>
-            </div>            
+            </div>
         </div>
     </div>
 
@@ -103,7 +104,9 @@
                 <p><strong>Location:</strong> {{ rec.location }}</p>
                 <p><strong>Match:</strong></p>
                 <div class="progress-bar">
-                    <div class="progress-fill" [style.width.%]="rec.match">{{ rec.match }}%</div>
+                    <div class="progress-fill {{ rec.match_level }}" style="width: {{ rec.match }}%;">
+                        {{ rec.match }}%
+                    </div>
                 </div>
             </div>
             {% endfor %}
@@ -112,7 +115,8 @@
     </div>
 
     <div class="footer" id="footer">
-        <p>Helping you find the perfect Product Management internship tailored to your skills, education, and location.</p>
+        <p>Helping you find the perfect Product Management internship tailored to your skills, education, and location.
+        </p>
         <br>
         <p>© 2025 InternHunt. All rights reserved.</p>
     </div>
