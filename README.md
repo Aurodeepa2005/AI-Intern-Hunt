@@ -10,7 +10,7 @@
 
 ## **Demo**
 Check out the live application here:  
-[🔗 Hugging Face Space](https://huggingface.co/spaces/<your-username>/internship-recommender)
+[🔗 Render Deployment](https://ai-intern-hunt.onrender.com)
 
 ---
 
@@ -40,7 +40,7 @@ Internships are stored in a CSV file (`internships.csv`) with columns:
 - **Machine Learning:** scikit-learn (TF-IDF, Cosine Similarity)  
 - **Frontend:** HTML, CSS  
 - **Data Handling:** Pandas  
-- **Deployment:** Hugging Face Spaces / Any Flask-compatible web server  
+- **Deployment:** Render  
 
 ---
 
@@ -49,5 +49,3 @@ Internships are stored in a CSV file (`internships.csv`) with columns:
 ```bash
 git clone https://github.com/<your-username>/internship-recommender.git
 cd internship-recommender
-
-
